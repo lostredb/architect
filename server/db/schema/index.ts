@@ -29,7 +29,7 @@ export const photos = pg.pgTable('photos', {
     projectId: pg
         .varchar('project_id', { length: 255 })
         .notNull()
-        .references(() => projects.id),
+        .references(() => projects.id, {onDelete: 'cascade', onUpdate: 'cascade'}),
 
     url: pg
         .text('url')

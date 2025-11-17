@@ -10,7 +10,7 @@ export function Loader() {
                 alt=""
                 width={100}
                 height={100}
-                className="animate-spin"
+                className="animate-spin pointer-events-none select-none"
                 />
                 <p className="text-[24px] font-medium">loading<span className="animate-bounce">.</span><span className="animate-bounce delay-[0.1s]">.</span><span className="animate-bounce delay-[0.2s]">.</span></p>
             </div>

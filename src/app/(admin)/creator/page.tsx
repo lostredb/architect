@@ -62,12 +62,18 @@ export default function CreatorPage() {
 }
 
 function CreateProject() {
-    const createProjectMutation = useMutation({
+    const createProjectsMutation = useMutation({
         mutationKey: ['projects'],
-        mutationFn: async (input: z.infer<typeof ProjectsSchema>) => {
-            const {error} = await api.projects.post(input)
-            if (error) {
-                throw new Error(String(error.status))
+        mutationFn: async (formData: FormData) => {
+            const res = await fetch(`${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/projects`, {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            })
+
+            if (!res.ok) {
+                const text = await res.text()
+                throw new Error(text)
             }
         },
         onSuccess: async () => {
@@ -78,12 +84,17 @@ function CreateProject() {
     const form = useForm({
         defaultValues: {
             title: '',
-            description: ''
+            description: '',
+            images: [] as File[]
         },
-        onSubmit: async ({value, formApi}) => {
-            const parsed = ProjectsSchema.parse(value)
-            await createProjectMutation.mutateAsync(parsed)
-            formApi.reset()
+        onSubmit: async ({value}) => {
+            const formData = new FormData()
+
+            formData.append('title', value.title),
+            formData.append('description', value.description),
+            value.images.forEach(image => formData.append('images', image))
+
+            await createProjectsMutation.mutateAsync(formData)
         }
     })
 
@@ -127,6 +138,32 @@ function CreateProject() {
                         onBlur={f.handleBlur}
                         className="bg-[#F3F3F3] rounded-none resize-none h-24 px-3 py-2"
                         />
+                    </div>
+                )}
+                />
+                <Field 
+                name="images"
+                children={(f) => (
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor={f.name} className="text-[8px] font-normal tracking-[4px]">TITLE</Label>
+                        <Input 
+                        id={f.name}
+                        name={f.name}
+                        type="file"
+                        multiple
+                        accept="image/"
+                        onBlur={f.handleBlur}
+                        onChange={(e) => {
+                            const files = e.target.files ? Array.from(e.target.files) : [];
+                            f.handleChange(files)
+                        }}
+                        className="bg-[#F3F3F3] rounded-none"
+                        />
+                        {f.state.value.length > 0 && (
+                        <span className="text-xs text-gray-500">
+                            Выбрано файлов: {f.state.value.length}
+                        </span>
+                        )}
                     </div>
                 )}
                 />

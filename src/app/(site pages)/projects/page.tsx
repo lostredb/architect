@@ -47,7 +47,7 @@ export default function ProjectsPage() {
     }
 
     return (
-        <div className="flex flex-col w-full max-w-[1036px] h-full mb-30">
+        <div className="flex flex-col w-full max-w-[1170px] h-full mb-30">
             <Header active="projects"/>
             <div className="flex flex-col mt-15 gap-15">
                 <div className="flex flex-col">
@@ -57,17 +57,17 @@ export default function ProjectsPage() {
                 <div className="relative">
                     <div className="overflow-hidden">
                         <div 
-                            className="flex transition-transform duration-300 ease-in-out"
+                            className="flex transition-transform duration-400 ease-in-out"
                             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                         >
                             {projectGroups.map((group, groupIndex) => (
                                 <div 
                                     key={groupIndex} 
-                                    className="w-full h-fit flex-shrink-0 grid grid-cols-1 gap-15"
+                                    className="w-full flex-shrink-0 grid grid-cols-1 auto-rows-auto gap-15 mr-[1px]"
                                 >
                                     {group.map((project, projectIndex) => (
                                         <ProjectCard 
-                                            key={project.id} 
+                                            key={projectIndex} 
                                             project={project} 
                                         />
                                     ))}
@@ -75,7 +75,7 @@ export default function ProjectsPage() {
                             ))}
                         </div>
                     </div>
-                    <div className="flex items-center gap-7">
+                    <div className="flex items-center gap-7 mt-15">
                         {projectGroups.length > 1 && (
                             <div className="flex gap-5 text-[#BDBDBD] items-center">
                                 <p className="text-xl">{currentSlide + 1 < 10 ? `0${currentSlide + 1}` : currentSlide + 1}</p>
@@ -127,15 +127,15 @@ function ProjectCard({ project }: { project: { id: string | number, title: strin
     }
 
     return (
-        <div className="bg-[#FBFBFB] flex justify-between w-full">
+        <div className="bg-[#FBFBFB] flex justify-between w-full min-h-[435px]">
             <Image 
-                src={photos?.firstPhoto?.url || '/notFound.png'}
+                src={photos?.firstPhoto?.url.replace('/public', '') || '/notFound.png'}
                 alt={project.title}
                 width={670}
                 height={435}
-                className="max-h-[435px] h-full w-full max-w-[670px] object-cover"
+                className="max-h-[435px] h-full w-[670px] object-cover"
             />
-            <div className="flex flex-col p-7 justify-between max-w-[400px] w-full">
+            <div className="flex flex-col p-7 justify-between max-w-[500px] w-full">
                 <h3 className="text-[40px] font-light text-[#BDBDBD] -mt-6">{project.title}</h3>
                 <p className="text-[16px] whitespace-pre-line">{sliceTextByWords(project.description, 30)}</p>
                 <button className="flex items-center gap-5 py-6 px-13 bg-white w-fit">

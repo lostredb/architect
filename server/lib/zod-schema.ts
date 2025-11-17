@@ -9,7 +9,8 @@ export const userSchema = z.object({
 
 export const ProjectsSchema = z.object({
     title: z.string().min(4, 'Заголовок должен состоять минимально из 4 символов'),
-    description: z.string().min(10, 'Описание должно состоять минимально из 10 символов')
+    description: z.string().min(10, 'Описание должно состоять минимально из 10 символов'),
+    images: z.array(z.file()),
 })
 
 export const MainSchema = z.object({
