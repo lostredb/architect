@@ -51,7 +51,7 @@ export default function CreatorPage() {
 
     if (session?.user?.role === 'admin' && !isLoading) {
         return (
-            <div className="flex flex-col flex-1 max-w-[1036px] gap-4">
+            <div className="flex flex-col flex-1 max-h-fit max-w-[1036px] gap-4">
                 <Header active=""/>
                 <div className="flex gap-4 items-center">
                     <h1 className="px-5 mb-2 tracking-[2px]">HELLO <span className="font-bold">{session.user.name.toUpperCase()}</span></h1>
@@ -59,7 +59,7 @@ export default function CreatorPage() {
                     <button className="flex gap-2 text-white px-4 py-2 bg-[#333333] w-fit" onClick={() => rt.push('/sign/signout')}>Exit From Account</button>
 
                 </div>
-                <div className=" flex gap-2">
+                <div className=" flex gap-2 h-fit">
                     <CreateProject />
                     <ProjectsList />
                 </div>
@@ -216,7 +216,7 @@ function ProjectsList() {
     }
 
     return (
-        <div className="flex flex-col gap-2 w-full max-w-60 py-5">
+        <div className="flex flex-col gap-2 max-h-100 overflow-y-auto w-full max-w-60 py-5">
             {projects?.map((project, i) => (
                 <div key={i} className="flex justify-between w-full">
                     <p>{project.title}</p>

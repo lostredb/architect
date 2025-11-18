@@ -21,7 +21,7 @@ export function OurProjects() {
     })
     const rt = useRouter()
     return (
-        <div className="flex flex-col gap-20">
+        <div className="flex flex-col gap-15">
             <h1 className="text-[64px] font-light text-[#BDBDBD]">Our Projects</h1>
             <div className="flex flex-col gap-7">
                 {projects && (

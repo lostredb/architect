@@ -41,9 +41,9 @@ export default function Page() {
   }
   
   return (
-    <div className="flex flex-col w-full gap-5 max-w-[1170px] h-fit">
+    <div className="flex flex-col w-full gap-5 items-center">
       <Header active="main"/>
-      <div className="w-full overflow-hidden">
+      <div className="w-full overflow-hidden max-w-[1170px] ">
         <div
           className="flex w-full transition-transform duration-400 ease-in-out items-center"
           style={{ transform: `translateX(-${index * 100}%)` }}
@@ -91,9 +91,11 @@ export default function Page() {
           ))}
         </div>
       </div>
-      <AboutBlock />
-      <OurProjects />
-      <ContactBlock />
+      <div className="flex flex-col w-full gap-5 items-center max-w-[1170px]">
+        <AboutBlock />
+        <OurProjects />
+        <ContactBlock />
+      </div>
     </div>
   )
 }
@@ -111,7 +113,7 @@ function AboutBlock() {
   })
   
   return (
-  <div className="w-full flex flex-col gap-22 mt-12">
+  <div className="w-full flex flex-col gap-51 mt-12">
     <div className="w-full bg-[#FBFBFB] h-fit flex justify-end xl:grid xl:grid-cols-[570px_1fr] p-7 gap-20">
       
       <div className="relative w-full max-w-[570px] pointer-events-none select-none h-[495px]">
@@ -149,7 +151,7 @@ function AboutBlock() {
 
     </div>
     <div className="flex flex-col gap-15 -z-20">
-      <h1 className="text-[64px] font-light text-[#BDBDBD]">Main Focus/Mission Statement</h1>
+      <h1 className="text-[64px] font-light text-[#BDBDBD] -mt-29">Main Focus/Mission Statement</h1>
       <div className="flex justify-between -mt-29">
         <div className="flex gap-12 items-center w-full max-w-[424px]">
           <h1 className="text-[200px] font-black text-[#F2F2F2] select-none">1</h1>

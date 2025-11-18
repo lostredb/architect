@@ -144,7 +144,7 @@ export function ContactBlock() {
             alt=""
             width={1024}
             height={1024}
-            className="w-full pointer-events-none"
+            className="w-full pointer-events-none select-none"
             />
         </div>
     )
