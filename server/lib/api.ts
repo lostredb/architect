@@ -6,3 +6,7 @@ export const { api } = treaty<typeof App>('localhost:3000', {
         credentials: 'include'
     }
 })
+
+export const adminAPI = {
+    createModerator: (data: {name: string, email: string, password: string}) => api.admin.moderators.post(data)
+}

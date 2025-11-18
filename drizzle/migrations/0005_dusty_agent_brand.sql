@@ -1,0 +1,1 @@
+ALTER TABLE "applications" ALTER COLUMN "applicationTitle" SET DEFAULT 'Application';

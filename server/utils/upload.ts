@@ -32,8 +32,6 @@ export async function uploadToStorage(file: File) {
 
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    console.log("UPLOAD DIR:", uploadDir)
-    console.log("SAVE PATH:", filePath)
     await writeFile(filePath, buffer)
 
     return `/public/uploads/${fileName}`

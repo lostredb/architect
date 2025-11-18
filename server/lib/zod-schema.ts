@@ -18,3 +18,11 @@ export const MainSchema = z.object({
     mainFocusOne: z.string(),
     mainFocusTwo: z.string()
 })
+
+export const ApplicationSchema = z.object({
+    applicantName: z.string().min(2, 'Имя должно быть более 2-х символов'),
+    applicantPhoneNumber: z.string().min(11, 'Номер должен состоять из 11 цифр').max(11, 'Номер должен состоять из 11 цифр').regex(/^\d+$/, {message: 'Номер должен состоять из цифр'}),
+    applicantEmail: z.email('Неверный формат почты'),
+    applicationTitle: z.string().min(4, 'Заголовок должен состоять минимально из 4 символов'),
+    applicationMessage: z.string().min(10, 'Сообщение должно состоять минимально из 10 символов')
+})

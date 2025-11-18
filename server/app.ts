@@ -1,18 +1,22 @@
 import { db } from "@/server/db";
 import { auth } from "@/server/auth/better-auth";
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { info, photos, projects } from "./db/schema";
-import { MainSchema, ProjectsSchema } from "./lib/zod-schema";
+import { MainSchema, ProjectsSchema, userSchema } from "./lib/zod-schema";
 import { eq } from "drizzle-orm";
 import { uploadToStorage } from "./utils/upload";
 import path from "path";
 import fs from "fs";
+import { projectsServices } from "./projectsServices";
+import { infoServices } from "./infoServices";
 
 
 export const App = new Elysia({
     name: 'app',
     prefix: '/api'
 })
+.use(projectsServices)
+.use(infoServices)
 .mount(auth.handler)
 .derive({as: 'global'}, async ({request: { headers } }) => {
     return {
@@ -34,88 +38,20 @@ export const App = new Elysia({
 .get('/me', async ({ session }) => {
     return session
 })
-.get('/projects', async () => {
-    return await db.query.projects.findMany({
-        with: {
-            photos: true
+.group('/admin', (app) => {
+    return app.post('/moderators', async ({ body, session, set }) => {
+    if (session?.user?.role !== 'admin') {
+      set.status = 403
+      return { error: 'Forbidden' }
+    }
+    
+    await auth.api.signUpEmail({
+        body: {
+            ...body,
+            role: 'moderator'
         }
-    })
-})
-.post('/projects', async ({ request }) => {
-    const formData = await request.formData()
-
-    const title = formData.get('title') as string
-    const description = formData.get('description') as string
-
-    const imageFiles = formData.getAll('images') as File[]
-
-    const [project] = await db.insert(projects).values({
-        title,
-        description
-    }).returning()
-
-    for (const file of imageFiles) {
-        const imageUrl = await uploadToStorage(file)
-        console.log(imageUrl)
-        await db.insert(photos).values({
-            projectId: project.id,
-            url: imageUrl
-        })
-    }
-
-    return {
-        ok: true
-    }
-})
-.delete('/projects/:id', async ({ params }) => {
-    const photoList = await db.query.photos.findMany({
-        where: eq(photos.projectId, params.id)
-    })
-
-    for (const p of photoList) {
-        if (p.url) {
-            const filePath = path.join(process.cwd(), p.url.replace(/^\//, ''))
-
-            try {
-                fs.promises.unlink(filePath)
-                console.log("Удалён файл:", filePath)
-            }
-            catch (error) {
-                console.error("Не удалось удалить файл:", filePath, error)
-            }
-        }
-    }
-    await db.delete(photos).where(eq(photos.projectId, params.id))
-    await db.delete(projects).where(eq(projects.id, params.id))
-})
-.get('/photos/:id', async ({ params }) => {
-    const firstPhoto = await db.query.photos.findFirst({
-        where: eq(photos.projectId, params.id)
-    })
-    const allPhotos = await db.query.photos.findMany({
-        where: eq(photos.projectId, params.id)
-    })
-
-    return {
-        firstPhoto,
-        allPhotos
-    }
-})
-.get('/photos', async () => {
-    return await db.query.photos.findMany()
-})
-.put('/main', async ({body}) => {
-    const existingInfo = await db.select().from(info)
-
-    if (existingInfo.length > 0) {
-        await db.update(info).set(body)
-    } else {
-        await db.insert(info).values(body)
-    }
-}, {
-    body: MainSchema.partial()
-})
-
-.get('/main', async () => {
-    return await db.query.info.findFirst()
+    })    
+  }, {
+    body: userSchema
+  })
 })

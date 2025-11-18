@@ -63,7 +63,7 @@ export default function ProjectsPage() {
                             {projectGroups.map((group, groupIndex) => (
                                 <div 
                                     key={groupIndex} 
-                                    className="w-full flex-shrink-0 grid grid-cols-1 auto-rows-auto gap-15 mr-[1px]"
+                                    className="w-full shrink-0 grid grid-cols h-fit auto-rows-auto gap-15 mr-px"
                                 >
                                     {group.map((project, projectIndex) => (
                                         <ProjectCard 

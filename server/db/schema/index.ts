@@ -54,3 +54,32 @@ export const info = pg.pgTable('info', {
         .text()
         .default('')
 })
+
+export const applications = pg.pgTable('applications', {
+    id: pg
+        .varchar('id', { length: 255 })
+        .notNull()
+        .primaryKey()
+        .$defaultFn(() => crypto.randomUUID()),
+    applicantName: pg
+        .text('applicantName')
+        .notNull()
+        .default('Applicant Anonymous'),
+    applicantPhoneNumber: pg
+        .text('applicantPhoneNumber')
+        .notNull(),
+    applicantEmail: pg
+        .text('applicantEmail') 
+        .notNull(),
+    applicationTitle: pg
+        .text('applicationTitle')
+        .notNull()
+        .default('Application'),
+    applicationMessage: pg
+        .text('applicationMessage')
+        .notNull(),
+    createdAt: pg
+        .timestamp('created_at', { withTimezone: true, mode: 'date' })
+        .notNull()
+        .defaultNow()
+})

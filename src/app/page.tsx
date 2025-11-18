@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { api } from "@/server/lib/api"
-import { useRouter } from "next/navigation"
 import { Header } from "./header"
 import { Loader } from "./loader"
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs"
@@ -10,6 +9,8 @@ import { useState } from "react"
 import Image from "next/image"
 import { MainSchema } from "@/server/lib/zod-schema"
 import z from "zod"
+import { OurProjects } from "./ourprojects"
+import { ContactBlock } from "./contactus"
 
 export default function Page() {
   const [index, setIndex] = useState(0)
@@ -24,8 +25,6 @@ export default function Page() {
       return data
     }
   })
-
-  const router = useRouter()
 
   if (DataLoading) {
     return <Loader />
@@ -42,7 +41,7 @@ export default function Page() {
   }
   
   return (
-    <div className="flex flex-col w-full gap-5 max-w-[1036px] h-fit">
+    <div className="flex flex-col w-full gap-5 max-w-[1170px] h-fit">
       <Header active="main"/>
       <div className="w-full overflow-hidden">
         <div
@@ -50,10 +49,10 @@ export default function Page() {
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {projects?.map((project, i) => (
-            <div key={i} className={`flex w-full shrink-0 h-fit items-center py-10`}>
-              <div className="flex flex-col gap-10 pl-10">
+            <div key={i} className={`flex w-full shrink-0 h-fit items-center py-10 pr-1`}>
+              <div className="flex flex-col gap-10">
                 <div className="flex flex-col">
-                  <h2 className="text-[64px] text-[#BDBDBD] font-light">PROJECT</h2>
+                  <h1 className="text-[64px] text-[#BDBDBD] font-light">PROJECT</h1>
                   <h1 className="text-[64px] font-bold max-w-[360px] min-w-[280px] -mt-8">{project.title}</h1>
                 </div>
                 <div className={`flex-col gap-20 w-full shrink-0 h-fit ${projects?.length > 1 ? 'flex' : 'hidden'}`}>
@@ -93,6 +92,8 @@ export default function Page() {
         </div>
       </div>
       <AboutBlock />
+      <OurProjects />
+      <ContactBlock />
     </div>
   )
 }
@@ -111,9 +112,9 @@ function AboutBlock() {
   
   return (
   <div className="w-full flex flex-col gap-22 mt-12">
-    <div className="w-full bg-[#FBFBFB] h-fit flex justify-end xl:grid xl:grid-cols-[570px_1fr] p-7 gap-20 h-fit">
+    <div className="w-full bg-[#FBFBFB] h-fit flex justify-end xl:grid xl:grid-cols-[570px_1fr] p-7 gap-20">
       
-      <div className="relative w-full h-[500px] max-w-[570px] pointer-events-none select-none h-[495px]">
+      <div className="relative w-full max-w-[570px] pointer-events-none select-none h-[495px]">
         <Image 
           src='/Rectangle 8.png'
           alt=""

@@ -46,11 +46,11 @@ export function Header({active}: {active: string}) {
                     {logo}
                 </Link>
                 <div className="hidden gap-15 items-center xl:flex">
-                    <Link href={'/'} className={`tracking-[4px] h-fit text-[12px] ${active === 'main' ? 'border-b-1 border-t-1 border-[#333333] py-2 px-4' : ''}`}>MAIN</Link>
-                    <Link href={'/gallery'} className={`tracking-[4px] h-fit text-[12px] ${active === 'gallery' ? 'border-b-1 border-t-1 border-[#333333] py-2 px-4' : ''}`}>GALLERY</Link>
-                    <Link href={'/projects'} className={`tracking-[4px] h-fit text-[12px] ${active === 'projects' ? 'border-b-1 border-t-1 border-[#333333] py-2 px-4' : ''}`}>PROJECTS</Link>
-                    <Link href={''} className={`tracking-[4px] h-fit text-[12px] ${active === 'certs' ? 'border-b-1 border-t-1 border-[#333333] py-2 px-4' : ''}`}>CERTIFICATIONS</Link>
-                    <Link href={''} className={`tracking-[4px] h-fit text-[12px] ${active === 'contacts' ? 'border-b-1 border-t-1 border-[#333333] py-2 px-4' : ''}`}>CONTACTS</Link>
+                    <Link href={'/'} className={`tracking-[4px] h-fit text-[12px] ${active === 'main' ? 'border-b border-t border-[#333333] py-2 px-4' : ''}`}>MAIN</Link>
+                    <Link href={'/gallery'} className={`tracking-[4px] h-fit text-[12px] ${active === 'gallery' ? 'border-b border-t border-[#333333] py-2 px-4' : ''}`}>GALLERY</Link>
+                    <Link href={'/projects'} className={`tracking-[4px] h-fit text-[12px] ${active === 'projects' ? 'border-b border-t border-[#333333] py-2 px-4' : ''}`}>PROJECTS</Link>
+                    <Link href={''} className={`tracking-[4px] h-fit text-[12px] ${active === 'certs' ? 'border-b border-t border-[#333333] py-2 px-4' : ''}`}>CERTIFICATIONS</Link>
+                    <Link href={''} className={`tracking-[4px] h-fit text-[12px] ${active === 'contacts' ? 'border-b border-t border-[#333333] py-2 px-4' : ''}`}>CONTACTS</Link>
                 </div>
             </div>
         </div>

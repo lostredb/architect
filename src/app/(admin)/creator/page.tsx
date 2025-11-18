@@ -2,18 +2,18 @@
 
 import { api } from "@/server/lib/api"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loader } from "../../loader"
 import z from "zod"
-import { MainSchema, ProjectsSchema } from "@/server/lib/zod-schema"
+import { MainSchema, userSchema } from "@/server/lib/zod-schema"
 import { queryClient } from "../../queryClient"
 import { useForm } from "@tanstack/react-form"
 import { Label } from "@radix-ui/react-label"
 import { Input } from "@/components/ui/input"
 import { Header } from "../../header"
 import { FaTrash } from "react-icons/fa";
+import { authClient } from "../../auth-client"
 
 export default function CreatorPage() {
     const router = useRouter()
@@ -30,10 +30,17 @@ export default function CreatorPage() {
         }
     })
 
+    const rt = useRouter()
+
     useEffect(() => {
         if (!session && !isLoading) {
             router.push('/')
         }
+        if (session?.user?.role !== 'admin' && !isLoading) {
+        return (
+            router.push('/')
+        )
+    }
     }, [router, isLoading])
 
     if (isLoading) {
@@ -42,23 +49,27 @@ export default function CreatorPage() {
         )
     }
 
-    if (session?.user?.role !== 'admin') {
+    if (session?.user?.role === 'admin' && !isLoading) {
         return (
-            <Loader />
+            <div className="flex flex-col flex-1 max-w-[1036px] gap-4">
+                <Header active=""/>
+                <div className="flex gap-4 items-center">
+                    <h1 className="px-5 mb-2 tracking-[2px]">HELLO <span className="font-bold">{session.user.name.toUpperCase()}</span></h1>
+                    <button className="flex gap-2 text-white px-4 py-2 bg-[#333333] w-fit" onClick={() => rt.push('/applications')}>Applications</button>
+                    <button className="flex gap-2 text-white px-4 py-2 bg-[#333333] w-fit" onClick={() => rt.push('/sign/signout')}>Exit From Account</button>
+
+                </div>
+                <div className=" flex gap-2">
+                    <CreateProject />
+                    <ProjectsList />
+                </div>
+                <MainUpdate />
+                <CreateModerator />
+            </div>
         )
     }
 
-    return (
-        <div className="flex flex-col flex-1 max-w-[1036px] gap-4">
-            <Header active=""/>
-            <h1 className="px-5 mb-2 tracking-[2px]">HELLO <span className="font-bold">{session.user.name.toUpperCase()}</span></h1>
-            <div className=" flex gap-2">
-                <CreateProject />
-                <ProjectsList />
-            </div>
-            <MainUpdate />
-        </div>
-    )
+    return <Loader />
 }
 
 function CreateProject() {
@@ -205,7 +216,7 @@ function ProjectsList() {
     }
 
     return (
-        <div className="flex flex-col gap-2 w-full max-w-[240px] py-5">
+        <div className="flex flex-col gap-2 w-full max-w-60 py-5">
             {projects?.map((project, i) => (
                 <div key={i} className="flex justify-between w-full">
                     <p>{project.title}</p>
@@ -316,6 +327,109 @@ function MainUpdate() {
                     />
                 </div>
                 <button type="submit" className="bg-[#333333] text-white text-[12px] tracking-[4px] py-3">UPDATE</button>
+            </form>
+        </div>
+    )
+}
+
+function CreateModerator() {
+    const createModeratorMutation = useMutation({
+        mutationKey: ['moderators'],
+        mutationFn: async (input: z.infer<typeof userSchema>) => {
+            const {error} = await api.admin.moderators.post(input)
+            if (error) {
+                throw new Error(String(error.status))
+            }
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['moderators']
+            })
+        }
+    })
+
+    const form = useForm({
+        defaultValues: {
+            name: '',
+            email: '',
+            password: ''
+        },
+        onSubmit: async ({value, formApi}) => {
+            const parsed = userSchema.parse(value)
+            createModeratorMutation.mutateAsync(parsed)
+            formApi.reset()
+        }
+    })
+
+    const isPending = createModeratorMutation.isPending
+
+    if (isPending) {
+        return <Loader />
+    }
+
+    const Field = form.Field
+
+    return (
+        <div className="w-full">
+            <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className="flex flex-col gap-3 p-6 rounded-xl w-full"
+            >
+                <h1 className="font-medium mb-2 tracking-[2px]">CREATE MODERATOR</h1>
+                <Field 
+                name="name"
+                children={(f) => (
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor={f.name} className="text-[8px] font-normal tracking-[4px]">NAME</Label>
+                        <Input 
+                        id={f.name}
+                        name={f.name}
+                        value={f.state.value}
+                        onBlur={f.handleBlur}
+                        onChange={(e) => f.handleChange(e.target.value)}
+                        className="bg-[#F3F3F3] rounded-none"
+                        />
+                    </div>
+                )}
+                />
+                <Field 
+                name="email"
+                children={(f) => (
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor={f.name} className="text-[8px] font-normal tracking-[4px]">EMAIL</Label>
+                        <Input 
+                        id={f.name}
+                        name={f.name}
+                        type="email"
+                        value={f.state.value}
+                        onBlur={f.handleBlur}
+                        onChange={(e) => f.handleChange(e.target.value)}
+                        className="bg-[#F3F3F3] rounded-none"
+                        />
+                    </div>
+                )}
+                />
+                <Field 
+                name="password"
+                children={(f) => (
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor={f.name} className="text-[8px] font-normal tracking-[4px]">PASSWORD</Label>
+                        <Input 
+                        id={f.name}
+                        name={f.name}
+                        value={f.state.value}
+                        type="password"
+                        onBlur={f.handleBlur}
+                        onChange={(e) => f.handleChange(e.target.value)}
+                        className="bg-[#F3F3F3] rounded-none"
+                        />
+                    </div>
+                )}
+                />
+                <button type="submit" className="bg-[#333333] text-white text-[12px] tracking-[4px] py-3">REGISTRATION</button>
             </form>
         </div>
     )
