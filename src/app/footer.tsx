@@ -22,7 +22,7 @@ export function Footer() {
     return (
         <div className="w-full bg-[#2C2C2C] flex flex-col items-center">
             <div className="w-full flex max-w-[1170px] py-6 justify-between">
-                {ArchitectLogoWhite}
+                <Link href={'/applications'}>{ArchitectLogoWhite}</Link>
                 <div className="flex gap-30">
                     <div className="flex flex-col gap-7">
                         <h1 className="text-white font-bold">Information</h1>

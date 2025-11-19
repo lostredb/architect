@@ -32,9 +32,9 @@ export default function GalleryPage() {
                     <h1 className="flex text-[64px] font-light text-[#BDBDBD]">Photo</h1>
                     <h1 className="flex text-[64px] font-bold -mt-8">Gallery</h1>
                 </div>
-                <div className="grid grid-cols-5 w-full gap-[30px]">
+                <div className="grid grid-cols-5 w-full gap-[30px] select-none">
                     {photos?.map((p) => (
-                        <Dialog>
+                        <Dialog key={p.id}>
                             <DialogTrigger>
                                 <Image
                                 key={p.id}
@@ -46,6 +46,11 @@ export default function GalleryPage() {
                                 />
                             </DialogTrigger>
                             <DialogContent className="p-0 rounded-3xl" showCloseButton={false}>
+                                <DialogHeader className="hidden">
+                                    <DialogTitle>
+
+                                    </DialogTitle>
+                                </DialogHeader>
                                 <Image
                                 src={p.url.replace('/public', '')}
                                 alt=""

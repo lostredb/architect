@@ -49,7 +49,7 @@ export default function ApplicationsPage() {
     })
 
 
-    if (isLoading && load) {
+    if (isLoading || load) {
         return <Loader />
     }
 
@@ -63,24 +63,28 @@ export default function ApplicationsPage() {
         }
 
     return (
-        <div className="flex flex-col w-full gap-5 max-w-[1036px] h-fit">
+        <div className="flex flex-col w-full gap-5 max-w-[1036px] h-fit mb-20">
             <Header active=""/>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-10">
                 {applications?.map((app) => (
-                    <div key={app.id} className="flex bg-[#FBFBFB] justify-between p-6 items-center rounded-lg">
-                        <div className="flex flex-col gap-4">
-                            <h1 className="text-2xl font-bold">{app.applicationTitle}</h1>
-                            <div className="flex gap-3">
-                                <h2 className="text-[16px] font-medium">{app.applicantPhoneNumber}</h2>
-                                <h2 className="text-[16px] font-medium">{app.applicantEmail}</h2>
+                    <div className="flex flex-col gap-7 p-5 rounded-lg bg-gray-100" key={app.id}>
+                        <div className="flex justify-between items-center border-b border-b-gray-400 pb-4">
+                            <div className="flex flex-col gap-4">
+                                <h1 className="text-2xl font-bold">{app.applicationTitle}</h1>
+                                <div className="flex flex-col gap-2">
+                                    <h2 className="text-[20px] font-medium">Contacts:</h2>
+                                    <p className="text-[12px]">Name: <span className="font-semibold">{app.applicantName}</span></p>
+                                    <p className="text-[12px]">Phone Number: <span className="font-semibold">{app.applicantPhoneNumber}</span></p>
+                                    <p className="text-[12px]">E-mail: <span className="font-semibold">{app.applicantEmail}</span></p>
+                                </div>
                             </div>
-                            <p className="text-gray-600 whitespace-pre-line">{app.applicationMessage}</p>
-                        </div>
-                        <div className="flex gap-6 items-center">
-                            <p className="font-medium">{app.createdAt.toLocaleDateString()}</p>
-                            <button className="p-3 bg-gray-300 rounded-lg hover:text-green-500 hover:bg-green-800 transition-all duration-200" onClick={() => deleteApplictionMutation.mutateAsync(app.id)}>
-                                <MdOutlineTaskAlt className="size-6 "/>
+                            <button className="p-3 group rounded-lg bg-gray-300 hover:bg-green-600 transition-colors duration-200 ease-in-out h-fit">
+                                <MdOutlineTaskAlt className="group-hover:text-white text-black size-4 transition-colors duration-200 ease-in-out"/>
                             </button>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <h1 className="text-2xl font-bold">Message</h1>
+                            <p className="text-[14px] text-gray-500 whitespace-pre-line">{app.applicationMessage}</p>
                         </div>
                     </div>
                 ))}
