@@ -8,6 +8,7 @@ import Image from "next/image"
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs"
 import { sliceTextByWords } from "../../page"
 import { useState } from "react"
+import { Footer } from "../../footer"
 
 export default function ProjectsPage() {
     const {data: projects, isLoading} = useQuery({
@@ -47,61 +48,64 @@ export default function ProjectsPage() {
     }
 
     return (
-        <div className="flex flex-col w-full max-w-[1170px] h-full mb-30">
-            <Header active="projects"/>
-            <div className="flex flex-col mt-15 gap-15">
-                <div className="flex flex-col">
-                    <h1 className="flex text-[64px] font-light text-[#BDBDBD]">Our</h1>
-                    <h1 className="flex text-[64px] font-bold -mt-8">Projects</h1>
-                </div>
-                <div className="relative">
-                    <div className="overflow-hidden">
-                        <div 
-                            className="flex transition-transform duration-400 ease-in-out"
-                            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-                        >
-                            {projectGroups.map((group, groupIndex) => (
-                                <div 
-                                    key={groupIndex} 
-                                    className="w-full shrink-0 grid grid-cols h-fit auto-rows-auto gap-15 mr-px"
-                                >
-                                    {group.map((project, projectIndex) => (
-                                        <ProjectCard 
-                                            key={projectIndex} 
-                                            project={project} 
-                                        />
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
+        <div className="flex flex-col items-center w-full">
+            <div className="flex flex-col w-full max-w-[1170px] h-full mb-30">
+                <Header active="projects"/>
+                <div className="flex flex-col mt-15 gap-15">
+                    <div className="flex flex-col">
+                        <h1 className="flex text-[64px] font-light text-[#BDBDBD]">Our</h1>
+                        <h1 className="flex text-[64px] font-bold -mt-8">Projects</h1>
                     </div>
-                    <div className="flex items-center gap-7 mt-15">
-                        {projectGroups.length > 1 && (
-                            <div className="flex gap-5 text-[#BDBDBD] items-center">
-                                <p className="text-xl">{currentSlide + 1 < 10 ? `0${currentSlide + 1}` : currentSlide + 1}</p>
-                                <p className="text-3xl font-light">/</p>
-                                <p className="text-xl">{projectGroups.length < 10 ? `0${projectGroups.length}` : `${projectGroups.length}`}</p>
+                    <div className="relative">
+                        <div className="overflow-hidden">
+                            <div 
+                                className="flex transition-transform duration-400 ease-in-out"
+                                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                            >
+                                {projectGroups.map((group, groupIndex) => (
+                                    <div 
+                                        key={groupIndex} 
+                                        className="w-full shrink-0 grid grid-cols h-fit auto-rows-auto gap-15 mr-px"
+                                    >
+                                        {group.map((project, projectIndex) => (
+                                            <ProjectCard 
+                                                key={projectIndex} 
+                                                project={project} 
+                                            />
+                                        ))}
+                                    </div>
+                                ))}
                             </div>
-                        )}
-                        {projectGroups.length > 1 && (
-                            <div className="flex justify-center gap-4">
-                                <button 
-                                    onClick={prevSlide}
-                                    className="p-3 bg-[#F9F9F9] text-white hover:bg-gray-200 transition-colors"
-                                >
-                                    <BsArrowLeft size={20} className="text-black"/>
-                                </button>
-                                <button 
-                                    onClick={nextSlide}
-                                    className="p-3 bg-[#F9F9F9] text-white hover:bg-gray-200 transition-colors"
-                                >
-                                    <BsArrowRight size={20} className="text-black"/>
-                                </button>
-                            </div>
-                        )}
+                        </div>
+                        <div className="flex items-center gap-7 mt-15">
+                            {projectGroups.length > 1 && (
+                                <div className="flex gap-5 text-[#BDBDBD] items-center">
+                                    <p className="text-xl">{currentSlide + 1 < 10 ? `0${currentSlide + 1}` : currentSlide + 1}</p>
+                                    <p className="text-3xl font-light">/</p>
+                                    <p className="text-xl">{projectGroups.length < 10 ? `0${projectGroups.length}` : `${projectGroups.length}`}</p>
+                                </div>
+                            )}
+                            {projectGroups.length > 1 && (
+                                <div className="flex justify-center gap-4">
+                                    <button 
+                                        onClick={prevSlide}
+                                        className="p-3 bg-[#F9F9F9] text-white hover:bg-gray-200 transition-colors"
+                                    >
+                                        <BsArrowLeft size={20} className="text-black"/>
+                                    </button>
+                                    <button 
+                                        onClick={nextSlide}
+                                        className="p-3 bg-[#F9F9F9] text-white hover:bg-gray-200 transition-colors"
+                                    >
+                                        <BsArrowRight size={20} className="text-black"/>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     ) 
 }
