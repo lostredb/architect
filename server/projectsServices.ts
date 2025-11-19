@@ -5,25 +5,30 @@ import { db } from "./db";
 import { eq } from "drizzle-orm";
 import path from "path";
 import fs from "fs";
+import { RedisClient as RedisCache } from "./lib/redis";
+import { redis } from 'bun'
 
 export const projectsServices = new Elysia({
     name: 'projectServices'
 })
 .get('/projects', async () => {
-    return await db.query.projects.findMany({
+    return RedisCache('projects', async () => {
+        return await db.query.projects.findMany({
         with: {
             photos: true
         }
     })
+    })
 })
 .post('/projects', async ({ request }) => {
+    redis.del('projects')
     const formData = await request.formData()
 
     const title = formData.get('title') as string
     const description = formData.get('description') as string
 
     const imageFiles = formData.getAll('images') as File[]
-
+    
     const [project] = await db.insert(projects).values({
         title,
         description
@@ -37,11 +42,19 @@ export const projectsServices = new Elysia({
         })
     }
 
+    RedisCache('projects', async () => {
+        return await db.query.projects.findMany({
+            with: {
+                photos: true
+            }
+        })
+    })
     return {
         ok: true
     }
 })
 .delete('/projects/:id', async ({ params }) => {
+    redis.del('projects')
     const photoList = await db.query.photos.findMany({
         where: eq(photos.projectId, params.id)
     })
@@ -60,6 +73,13 @@ export const projectsServices = new Elysia({
     }
     await db.delete(photos).where(eq(photos.projectId, params.id))
     await db.delete(projects).where(eq(projects.id, params.id))
+    RedisCache('projects', async () => {
+        await db.query.projects.findMany({
+            with: {
+                photos: true
+            }
+        })
+    })
 })
 .get('/photos/:id', async ({ params }) => {
     const firstPhoto = await db.query.photos.findFirst({
@@ -75,5 +95,7 @@ export const projectsServices = new Elysia({
     }
 })
 .get('/photos', async () => {
-    return await db.query.photos.findMany()
+    return RedisCache('photos', async () => {
+        return await db.query.photos.findMany()
+    })
 })

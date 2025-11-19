@@ -11,6 +11,7 @@ import { MainSchema } from "@/server/lib/zod-schema"
 import z from "zod"
 import { OurProjects } from "./ourprojects"
 import { ContactBlock } from "./contactus"
+import { Footer } from "./footer"
 
 export default function Page() {
   const [index, setIndex] = useState(0)
@@ -42,7 +43,9 @@ export default function Page() {
   
   return (
     <div className="flex flex-col w-full gap-5 items-center">
-      <Header active="main"/>
+      <div className="w-full sticky">
+        <Header active="main"/>
+      </div>
       <div className="w-full overflow-hidden max-w-[1170px] ">
         <div
           className="flex w-full transition-transform duration-400 ease-in-out items-center"
@@ -91,11 +94,12 @@ export default function Page() {
           ))}
         </div>
       </div>
-      <div className="flex flex-col w-full gap-5 items-center max-w-[1170px]">
+      <div className="flex flex-col w-full gap-5 items-center max-w-[1170px] mb-20">
         <AboutBlock />
         <OurProjects />
         <ContactBlock />
       </div>
+      <Footer />
     </div>
   )
 }
