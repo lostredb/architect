@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Get started
 
-## Getting Started
+This is **Next app** with using libs: drizzle, Elysia, tanstack, Redis
 
-First, run the development server:
+### For launch project in localhost needed print in console commands:
+1. `bun i`
+2.  `bunx drizzle-kit generate`
+3.  `bunx drizzle-kit migrate`
+4.  `bun dev`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Documentations:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This is docs which help u with understanding the code and hierarchies of project
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Next docs](https://nextjs.org/)
+- [Elysia docs](https://elysiajs.com/)
+- [Better-auth docs](https://www.better-auth.com/)
+- [@tanstack docs](https://tanstack.com/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+More information u can find in internet thanks for attention to my project
